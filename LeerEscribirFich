@@ -1,0 +1,55 @@
+package ejerciciosFicheros;
+
+import java.io.*;
+import java.util.Scanner;
+
+public class Eje2 {
+//https://www.discoduroderoer.es/ejercicios-propuestos-y-resueltos-de-ficheros-en-java/
+
+	public static void metodoEscribir(String rut, String txt) {
+		File file = new File(rut);
+		try (FileWriter fw = new FileWriter(file)) {
+
+			fw.write(txt);
+			fw.flush();
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static String metodoLeer(String rut) {
+		String cadena = "";
+		char[] matriz = new char[50];
+
+		try (FileReader fr = new FileReader(new File(rut))) {
+
+			fr.read(matriz);
+			fr.close();
+			for (char c : matriz) {
+
+				if (Character.isLowerCase(c)) {
+					cadena += Character.toUpperCase(c);
+				} else if (Character.isUpperCase(c)) {
+					cadena += Character.toLowerCase(c);
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return cadena;
+	}
+
+	public static void main(String[] args) {
+		String rut = "", txt = "";
+		Scanner tec = new Scanner(System.in);
+		System.out.println("Introduce la ruta del fichero: ");
+		rut = tec.nextLine();
+		System.out.println("Introduce el texto: ");
+		txt = tec.nextLine();
+		metodoEscribir(rut, txt);
+		System.out.println(metodoLeer(rut));
+	}
+}
