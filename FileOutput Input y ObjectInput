@@ -1,0 +1,103 @@
+package ejercicio6Clase;
+
+import java.io.*;
+import java.util.Scanner;
+
+import javax.swing.JOptionPane;
+
+public class GestionCoches {
+
+	public static void main(String[] args) {
+
+		String matricula = "";
+		String marca = "";
+		double tamDep = 0;
+		String modelo = "";
+		Scanner sc = new Scanner(System.in);
+
+		try (FileOutputStream fa = new FileOutputStream("E:\\fp\\programación\\ejerciciosClase\\prueba\\Ejercicio6.ser");
+				ObjectOutputStream os = new ObjectOutputStream(fa);) {
+
+			for (int i = 0; i < 1; i++) {
+				System.out.println("Introduzca la matricula");
+				matricula = sc.next();
+				System.out.println("Introduzca la marca");
+				marca = sc.next();
+				System.out.println("Introduzca el tamaño del deposito");
+				tamDep = sc.nextDouble();
+				System.out.println("Introduzca el modelo");
+				modelo = sc.next();
+
+				os.writeObject(new coche(matricula, marca, tamDep, modelo));
+			}
+
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		try (FileInputStream fas = new FileInputStream("E:\\fp\\programación\\ejerciciosClase\\prueba\\Ejercicio6.ser");
+				ObjectInputStream oos = new ObjectInputStream(fas);) {
+			for (int i = 0; i < 1; i++) {
+				coche c = (coche) oos.readObject();
+				JOptionPane.showMessageDialog(null, c.toString());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+}
+
+class coche implements Serializable {
+
+	public coche(String matricula, String marca, double tamDep, String modelo) {
+		this.matricula = matricula;
+		this.marca = marca;
+		this.tamDep = tamDep;
+		this.modelo = modelo;
+	}
+
+	private static final long serialVersionUID = 1L;
+	String matricula = "";
+	String marca = "";
+	double tamDep = 0;
+	String modelo = "";
+
+	public String getMatricula() {
+		return matricula;
+	}
+
+	public void setMatricula(String matricula) {
+		this.matricula = matricula;
+	}
+
+	public String getMarca() {
+		return marca;
+	}
+
+	public void setMarca(String marca) {
+		this.marca = marca;
+	}
+
+	public double getTamDep() {
+		return tamDep;
+	}
+
+	public void setTamDep(double tamDep) {
+		this.tamDep = tamDep;
+	}
+
+	public String getModelo() {
+		return modelo;
+	}
+
+	public void setModelo(String modelo) {
+		this.modelo = modelo;
+	}
+
+	@Override
+	public String toString() {
+		return "coche [matricula=" + matricula + ", marca=" + marca + ", tamDep=" + tamDep + ", modelo=" + modelo + "]";
+	}
+
+}
