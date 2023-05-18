@@ -1,0 +1,117 @@
+package gestionEmpleados;
+
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+
+public class GestionEmpleados implements ActionListener {
+
+	static String modificar;
+	
+	private JButton botonAltas;
+	private JButton botonBajas;
+	private JButton botonModificar;
+	private JButton botonListar;
+	private JButton botonSalir;
+
+	private JFrame base;
+
+	GestionEmpleados() {
+
+		botonAltas = new JButton("Dar alta empleado");
+		botonBajas = new JButton("Dar baja empleado");
+		botonModificar = new JButton("Modificar");
+		botonListar = new JButton("Listar");
+		botonSalir = new JButton("Salir");
+
+		botonAltas.addActionListener(this);
+		botonBajas.addActionListener(this);
+		botonModificar.addActionListener(this);
+		botonListar.addActionListener(this);
+		botonSalir.addActionListener(this);
+
+		base = new JFrame("Gestion de empleados");
+		Container contenedor = base.getContentPane();
+
+		contenedor.setLayout(new GridLayout(5, 1));
+
+		contenedor.add(botonAltas);
+		contenedor.add(botonBajas);
+		contenedor.add(botonModificar);
+		contenedor.add(botonListar);
+		contenedor.add(botonSalir);
+
+		base.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		base.setSize(450, 600);
+		base.setVisible(true);
+
+	}
+
+	public JFrame getBase() {
+		return base;
+	}
+	public JButton getBotonAltas() {
+		return botonAltas;
+	}
+
+	public void setBotonAltas(JButton botonAltas) {
+		this.botonAltas = botonAltas;
+	}
+
+	public JButton getBotonBajas() {
+		return botonBajas;
+	}
+
+	public void setBotonBajas(JButton botonBajas) {
+		this.botonBajas = botonBajas;
+	}
+
+	public JButton getBotonModificar() {
+		return botonModificar;
+	}
+
+	public void setBotonModificar(JButton botonModificar) {
+		this.botonModificar = botonModificar;
+	}
+
+	public JButton getBotonListar() {
+		return botonListar;
+	}
+
+	public void setBotonListar(JButton botonListar) {
+		this.botonListar = botonListar;
+	}
+
+	public JButton getBotonSalir() {
+		return botonSalir;
+	}
+
+	public void setBotonSalir(JButton botonSalir) {
+		this.botonSalir = botonSalir;
+	}
+
+	public static void main(String[] args) {
+		new GestionEmpleados();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (botonAltas == (JButton) e.getSource()) {
+			new VentanaAltas();
+			base.setVisible(false);
+		} else if (botonBajas == (JButton) e.getSource()) {
+			new Bajas();
+			base.setVisible(false);
+		} else if (botonModificar == (JButton) e.getSource()) {
+			modificar=JOptionPane.showInputDialog(base,"Introducir codigo de empleado");
+		new Modificar(modificar);
+		} else if (botonListar == (JButton) e.getSource()) {
+
+		} else if (botonSalir == (JButton) e.getSource()) {
+			System.exit(0);
+		}
+	}
+}
