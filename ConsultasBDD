@@ -1,0 +1,38 @@
+package tema10;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class Prueba2 {
+
+	public static void main(String[] args) {
+		String url = "jdbc:mysql://localhost:3306/empresa";
+		String user = "alumno";
+		String pwd = "alumno";
+		try {
+			Connection conn = DriverManager.getConnection(url, user, pwd);
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM emp order by empno";
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				System.out.print(rs.getInt("empno") + ", ");
+				System.out.print(rs.getString("ename") + ", ");
+				System.out.print(rs.getString("job") + ", ");
+				System.out.print(rs.getInt("mgr") + ", ");
+				System.out.print(rs.getDate("hiredate") + ", ");
+				System.out.print(rs.getInt("sal") + ", ");
+				System.out.print(rs.getInt("comm") + ", ");
+				System.out.print(rs.getInt("deptno") + ", ");
+				System.out.println();
+//				conn.close();
+			}
+		} catch (SQLException se) {
+			System.out.println(se.getMessage());
+		}
+
+	}
+
+}
