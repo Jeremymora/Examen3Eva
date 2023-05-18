@@ -1,0 +1,147 @@
+package gestionEmpleados;
+
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.*;
+
+public class VentanaAltas implements ActionListener {
+
+	JLabel codigo;
+	JLabel nombre;
+	JLabel puesto;
+	JLabel manager;
+	JLabel fecha;
+	JLabel salario;
+	JLabel comision;
+	JLabel codDept;
+
+	JTextField Tcodigo;
+	JTextField Tnombre;
+	JTextField Tpuesto;
+	JTextField Tmanager;
+	JTextField Tfecha;
+	JTextField Tsalario;
+	JTextField Tcomision;
+	JTextField TcodDept;
+
+	JButton aceptar;
+	JButton cancelar;
+	JButton limpiar;
+
+	JFrame baseBaja;
+
+	Container panel;
+
+	JPanel datos;
+	JPanel botones;
+
+	VentanaAltas() {
+
+		baseBaja = new JFrame("Altas empleado");
+		panel = baseBaja.getContentPane();
+
+		codigo = new JLabel("Codigo :");
+		nombre = new JLabel("Nombre :");
+		puesto = new JLabel("Puesto :");
+		manager = new JLabel("Manager :");
+		fecha = new JLabel("Fecha :");
+		salario = new JLabel("Salario :");
+		comision = new JLabel("Comision :");
+		codDept = new JLabel("Codigo departamento:");
+
+		Tcodigo = new JTextField();
+		Tnombre = new JTextField();
+		Tpuesto = new JTextField();
+		Tmanager = new JTextField();
+		Tfecha = new JTextField();
+		Tsalario = new JTextField();
+		Tcomision = new JTextField();
+		TcodDept = new JTextField();
+
+		aceptar = new JButton("Aceptar");
+		cancelar = new JButton("Cancelar");
+		limpiar = new JButton("Limpiar");
+
+		panel.setLayout(new FlowLayout());
+
+		datos = new JPanel();
+		botones = new JPanel();
+
+		datos.setLayout(new GridLayout(8, 2));
+		botones.setLayout(new FlowLayout());
+
+		datos.add(codigo);
+		datos.add(Tcodigo);
+		datos.add(nombre);
+		datos.add(Tnombre);
+		datos.add(puesto);
+		datos.add(Tpuesto);
+		datos.add(manager);
+		datos.add(Tmanager);
+		datos.add(fecha);
+		datos.add(Tfecha);
+		datos.add(salario);
+		datos.add(Tsalario);
+		datos.add(comision);
+		datos.add(Tcomision);
+		datos.add(codDept);
+		datos.add(TcodDept);
+
+		botones.add(aceptar);
+		botones.add(cancelar);
+		botones.add(limpiar);
+
+		aceptar.addActionListener(this);
+		cancelar.addActionListener(this);
+		limpiar.addActionListener(this);
+
+		panel.add(datos);
+		panel.add(botones);
+
+		baseBaja.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		baseBaja.setSize(500, 300);
+		baseBaja.setVisible(true);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (aceptar == (JButton) e.getSource()) {
+			
+			try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/empresa", "alumno", "alumno");) {
+
+				Statement stm = con.createStatement();
+				stm.executeUpdate("INSERT INTO emp VALUES (" + Tcodigo.getText() + ",'" + Tnombre.getText() + "','"
+						+ Tpuesto.getText() + "'," + Tmanager.getText() + ",'" + Tfecha.getText() + "',"
+						+ Tsalario.getText() + "," + Tcomision.getText() + "," + TcodDept.getText() + ");");
+
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(baseBaja, e1.getMessage());
+			}
+			
+
+		} else if (cancelar == (JButton) e.getSource()) {
+
+			new GestionEmpleados().getBase().setVisible(true);
+			baseBaja.dispose();
+		} else if (limpiar == (JButton) e.getSource()) {
+			Tcodigo.setText("");
+			Tnombre.setText("");
+			Tpuesto.setText("");
+			Tmanager.setText("");
+			Tfecha.setText("");
+			Tsalario.setText("");
+			Tcomision.setText("");
+			TcodDept.setText("");
+		}
+	}
+}
