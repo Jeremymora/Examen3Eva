@@ -1,0 +1,170 @@
+package tema10;
+
+import java.sql.*;
+import java.util.ArrayList;
+
+public class Ejer3 {
+
+	public static void main(String[] args) {
+	}
+
+	public static void metodoB(int numero, String nombre, String localidad) {
+		String url = "jdbc:mysql://localhost:3306/empresa";
+		String user = "alumno";
+		String pwd = "alumno";
+
+		int afec = 0;
+
+//		Statement stm = null;
+		try (Connection conn = DriverManager.getConnection(url, user, pwd)) {
+
+//			stm = conn.createStatement();
+			// afec = stm.executeUpdate("INSERT INTO dept
+			// ('"+numero+"','"+nombre+"','"+localidad+"'"+ "VALUES
+			// ("+60+","+"'dw1e'"+","+"'madrid'");
+			// Usamos el preparedstatement para usar una sentencia que se puede reutilizar
+			// con las interrogaciones reemplazamos los metodos de setInt setString
+			// Usamos el metodo executeUpdate para ejecutar la sentencia
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO dept ((?),(?),(?));");
+			ps.setInt(1, numero);
+			ps.setString(2, nombre);
+			ps.setString(3, localidad);
+			ps.executeUpdate();
+
+		} catch (SQLException se) {
+			se.printStackTrace();
+		}
+	}
+
+	public static int metodoC(Departamento dept) {
+
+		String url = "jdbc:mysql://localhost:3306/empresa";
+		String user = "alumno";
+		String pwd = "alumno";
+
+		int afec = 0;
+
+		try (Connection conn = DriverManager.getConnection(url, user, pwd)) {
+
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO dept ((?),(?),(?));");
+			// Volvemos a usar el PreparedStatement para pasarle las variables de la clase
+			// Departamento
+
+			ps.setInt(1, dept.getNumero());
+			ps.setString(2, dept.getNombre());
+			ps.setString(3, dept.getLocalidad());
+			ps.executeUpdate();
+
+		} catch (SQLException se) {
+			se.printStackTrace();
+		}
+		return afec;
+
+	}
+
+	public static void metodoD() {
+		String url = "jdbc:mysql://localhost:3306/empresa";
+		String user = "alumno";
+		String pwd = "alumno";
+
+		Statement stm = null;
+		ResultSet rs = null;
+
+		ArrayList<Departamento> arr = new ArrayList<>();
+
+		try (Connection conn = DriverManager.getConnection(url, user, pwd)) {
+			stm = conn.createStatement();
+			// Usamos el executeQuery para "entrar en la tabla de dept"
+			rs = stm.executeQuery("SELECT * FROM dept;");
+			while (rs.next()) {
+				// Añadimos los datos de la tabla dept al array
+				// Primero insatanciamos la clase Departamento
+				arr.add(new Departamento(rs.getInt(1), rs.getString(2), rs.getString(3)));
+			}
+		} catch (SQLException se) {
+			se.printStackTrace();
+		}
+
+	}
+
+	public static Departamento metodoE(int numDep) {
+		String url = "jdbc:mysql://localhost:3306/empresa";
+		String user = "alumno";
+		String pwd = "alumno";
+
+		Statement stm = null;
+		ResultSet rs = null;
+		ResultSetMetaData rsmd = null;
+
+		Departamento dp = null;
+
+		try (Connection conn = DriverManager.getConnection(url, user, pwd)) {
+			stm = conn.createStatement();
+			// Con esta sentencia le pedimos el numero de departamento
+			rs = stm.executeQuery("Select dname,loc from dept where deptno='" + numDep + "';");
+			// Usamos el metodo next para que el puntero apunte al primer registro
+			rs.next();
+			dp = new Departamento(numDep, rs.getString(1), rs.getString(2));
+
+		} catch (SQLException se) {
+
+			System.out.println(se.getMessage());
+
+		}
+
+		return dp;
+	}
+
+	public static void metodoF(Departamento dept) {
+		String url = "jdbc:mysql://localhost:3306/empresa";
+		String user = "alumno";
+		String pwd = "alumno";
+
+		int afec = 0;
+
+		Statement st = null;
+		try (Connection conn = DriverManager.getConnection(url, user, pwd)) {
+
+			st = conn.createStatement();
+			afec = st.executeUpdate(
+					"update dept set dname='" + dept.getNombre() + "'" + " where detno='" + dept.getNumero() + "'");
+		} catch (SQLException se) {
+			se.printStackTrace();
+		}
+	}
+
+	public static void metodoG(int numDept) {
+		String url = "jdbc:mysql://localhost:3306/empresa";
+		String user = "alumno";
+		String pwd = "alumno";
+
+		int baja = 0;
+
+		Statement st = null;
+
+		try (Connection conn = DriverManager.getConnection(url, user, pwd)) {
+			st = conn.createStatement();
+
+			baja = st.executeUpdate("delete from dept where deptno='" + numDept + "'");
+			System.out.println("Registros afectados" + st.getUpdateCount());
+		} catch (SQLException se) {
+			se.printStackTrace();
+		}
+
+	}
+
+	public static void metodoI(int numDept) {
+		String url = "jdbc:mysql://localhost:3306/empresa";
+		String user = "alumno";
+		String pwd = "alumno";
+		
+		Statement st=null;
+		
+		try(Connection conn =DriverManager.getConnection(url,user,pwd)){
+			st=conn.createStatement();
+			
+		}catch(SQLException se) {
+			se.printStackTrace();
+		}
+	}
+}
