@@ -1,0 +1,43 @@
+package ejerClase;
+
+import java.io.*;
+import java.nio.file.*;
+import java.util.StringTokenizer;
+
+public class Ejer2AulaVir {
+
+	public static void main(String[] args) {
+		Path ruta = Paths.get("E:\\fp\\programación\\terceraEva\\ficheros\\restaurants.csv");
+		String reg;
+		try {
+			Files.createFile(ruta);
+			FileReader fr = new FileReader("E:\\fp\\programación\\terceraEva\\ficheros\\restaurants.csv");
+			BufferedReader br = new BufferedReader(fr);
+
+			while ((reg = br.readLine()) != null) {
+				if (comp(reg)) {
+					System.out.println(reg);
+				}
+			}
+
+		} catch (Exception e) {
+
+		}
+	}
+
+	public static boolean comp(String cad) {
+		StringTokenizer st = new StringTokenizer(cad);
+		String resu;
+		int cont = 0;
+		while (st.hasMoreElements()) {
+			resu = st.nextToken();
+			cont++;
+			if (cont == 2 && resu.startsWith("\"6")) {
+				return true;
+			}
+		}
+		return false;
+
+	}
+
+}
